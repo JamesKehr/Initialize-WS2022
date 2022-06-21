@@ -268,7 +268,7 @@ function Install-Font
 $savePath = "C:\Temp"
 
 # list of exact winget app IDs to install
-[array]$wingetApps = "JanDeDobbeleer.OhMyPosh", "WiresharkFoundation.Wireshark" # "Microsoft.PowerShell", "Microsoft.WindowsTerminal" -- winget tries to use MSIX which fails on 2022, so grab via github
+[array]$wingetApps = "JanDeDobbeleer.OhMyPosh", "WiresharkFoundation.Wireshark", "Microsoft.VisualStudioCode" # "Microsoft.PowerShell", "Microsoft.WindowsTerminal" -- winget tries to use MSIX which fails on 2022, so grab via github
 
 # powershell repro and file extension
 $pwshRepo = "PowerShell/PowerShell"
