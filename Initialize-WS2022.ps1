@@ -298,9 +298,6 @@ $fontFile = "CascadiaCode.zip"
 # npcap URL
 $npcapURL = "https://nmap.org/npcap/dist/npcap-1.60.exe"
 
-# TAT.Net URL
-$tatURL = "https://github.com/TextAnalysisTool/Releases/raw/master/TextAnalysisTool.NET.zip"
-
 
 # VCLib URL
 $vclibUrl = 'https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx'
@@ -316,71 +313,6 @@ $xamlUrl = 'https://www.nuget.org/packages/Microsoft.UI.Xaml/'
 ### MAIN ###
 
 $null = mkdir $savePath -EA SilentlyContinue
-$null = mkdir $env:USERPROFILE\Desktop\Scripts -EA SilentlyContinue
-
-Set-Location "$env:USERPROFILE\Desktop\Scripts"
-
-if ($TX.IsPresent)
-{
-    # rename the computer
-    Rename-Computer -NewName GEARS-RX
-
-    # look for the BLUE adapter
-    $blueNIC = Get-NetAdapter BLUE -EA SilentlyContinue
-    if ($blueNIC)
-    {
-        $blueIP = Get-NetIPAddress -InterfaceAlias BLUE -AddressFamily IPv4
-
-        if ($blueIP.SuffixOrigin -ne "Manual")
-        {
-            New-NetIPAddress -InterfaceAlias BLUE -AddressFamily IPv4 -IPAddress 10.2.0.2 -PrefixLength 24 -DefaultGateway 10.2.0.1
-            Set-DnsClientServerAddress -InterfaceAlias BLUE -ServerAddresses $DnsServer
-        }
-    }
-
-    # look for the GREEN adapter
-    $greenNIC = Get-NetAdapter GREEN -EA SilentlyContinue
-    if ($greenNIC)
-    {
-        $greenIP = Get-NetIPAddress -InterfaceAlias GREEN -AddressFamily IPv4 -EA SilentlyContinue
-
-        if ($greenIP.SuffixOrigin -ne "Manual")
-        {
-            New-NetIPAddress -InterfaceAlias GREEN -AddressFamily IPv4 -IPAddress 10.3.0.2 -PrefixLength 24
-        }
-    }
-
-}
-elseif ($RX.IsPresent) 
-{
-    # rename the computer
-    Rename-Computer -NewName GEARS-RX
-
-    # look for the RED adapter
-    $redNIC = Get-NetAdapter RED -EA SilentlyContinue
-    if ($redNIC)
-    {
-        $redIP = Get-NetIPAddress -InterfaceAlias RED -AddressFamily IPv4 -EA SilentlyContinue
-
-        if ($redIP.SuffixOrigin -ne "Manual")
-        {
-            New-NetIPAddress -InterfaceAlias RED -AddressFamily IPv4 -IPAddress 10.1.0.2 -PrefixLength 24 -DefaultGateway 10.1.0.1
-            Set-DnsClientServerAddress -InterfaceAlias RED -ServerAddresses $DnsServer
-        }
-    }
-
-    # look for the GREEN adapter
-    $greenNIC = Get-NetAdapter GREEN -EA SilentlyContinue
-    if ($greenNIC)
-    {
-        $greenIP = Get-NetIPAddress -InterfaceAlias GREEN -AddressFamily IPv4
-
-        if ($greenIP.SuffixOrigin -ne "Manual")
-        {
-            New-NetIPAddress -InterfaceAlias GREEN -AddressFamily IPv4 -IPAddress 10.3.0.1 -PrefixLength 24
-        }
-    }
-}
 
 
 ## install newest pwsh release ##
