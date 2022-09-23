@@ -303,7 +303,9 @@ $npcapURL = "https://nmap.org/npcap/dist/npcap-1.60.exe"
 $vclibUrl = 'https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx'
 
 # XAML URL for Terminal
-$xamlUrl = 'https://www.nuget.org/packages/Microsoft.UI.Xaml/'
+# version 2.7 currently required for winget
+#$xamlUrl = 'https://www.nuget.org/packages/Microsoft.UI.Xaml/'
+$xamlUrl = 'https://www.nuget.org/api/v2/package/Microsoft.UI.Xaml/2.7.3'
 
 
 #endregion CONSTANTS
@@ -347,7 +349,7 @@ try
     $xamlFilename = 'xaml.zip'
     $xamlFile = Get-WebFile -URI $xamlDlUrl -savePath $savePath -fileName $xamlFilename -EA Stop
     
-    Expand-Archive $xamlFile -EA Stop
+    Expand-Archive $xamlFile -Force -EA Stop
 
     # find the x64 installer
     $xamlAppx = Get-ChildItem .\xaml -Recurse -Filter "Microsoft.UI.Xaml.*.appx" | Where-Object { $_.FullName -match "x64" }
