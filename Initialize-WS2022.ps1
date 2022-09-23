@@ -303,7 +303,7 @@ $npcapURL = "https://nmap.org/npcap/dist/npcap-1.60.exe"
 $vclibUrl = 'https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx'
 
 # XAML URL for Terminal
-# version 2.7 currently required for winget
+# 2022-09-23 - Version 2.7 currently required for winget. NuGet's latest package is XAML 2.8 which causes winget install to fail.
 #$xamlUrl = 'https://www.nuget.org/packages/Microsoft.UI.Xaml/'
 $xamlUrl = 'https://www.nuget.org/api/v2/package/Microsoft.UI.Xaml/2.7.3'
 
@@ -408,6 +408,13 @@ do
     Start-Sleep 1
     $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User") 
     $wingetFnd = Get-Command winget -EA SilentlyContinue
+    
+    # 2022-09-23 - Using Add-AppxPackage seems to work with winget on WS2022, so try that is Add-AppxProvisionedPackage didn't see to work
+    if ($count -gt 0 -and -NOT $wingetFnd)
+    {
+        Add-AppxPackage $installFile
+    }
+    
     $count++
 } until ($wingetFnd -or $count -ge 10)
 
@@ -469,7 +476,8 @@ if ($fontName -notin (Get-InstalledFonts))
     Expand-Archive -Path $ccnfZip -DestinationPath $extractPath -Force
 
     # install fonts
-    Install-Font (Get-ChildItem "$extractPath" -Filter "*.ttf" -EA SilentlyContinue)
+    # 2022-09-23 - Added search for OTF files, as TTF support seems to be waning.
+    Install-Font (Get-ChildItem "$extractPath" -EA SilentlyContinue | Where-Object Extension -match '\.otf|\.ttf')
 
     Start-Sleep 30
 }
