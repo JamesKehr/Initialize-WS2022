@@ -341,13 +341,15 @@ catch
 }
 
 # install Microsoft.UI.Xaml
-$xamlPage = Invoke-WebRequest $xamlUrl -UseBasicParsing
-$xamlDlUrl = $xamlPage.Links | Where-Object { $_.outerHTML -match "outbound-manual-download" } | ForEach-Object { $_.href }
+# 28 Sept 22 - Not needed when setting the specific version in the NuGet URL
+#$xamlPage = Invoke-WebRequest $xamlUrl -UseBasicParsing
+#$xamlDlUrl = $xamlPage.Links | Where-Object { $_.outerHTML -match "outbound-manual-download" } | ForEach-Object { $_.href }
 
 try
 {
     $xamlFilename = 'xaml.zip'
-    $xamlFile = Get-WebFile -URI $xamlDlUrl -savePath $savePath -fileName $xamlFilename -EA Stop
+    #$xamlFile = Get-WebFile -URI $xamlDlUrl -savePath $savePath -fileName $xamlFilename -EA Stop
+    $xamlFile = Get-WebFile -URI $xamlUrl -savePath $savePath -fileName $xamlFilename -EA Stop
     
     Expand-Archive $xamlFile -Force -EA Stop
 
