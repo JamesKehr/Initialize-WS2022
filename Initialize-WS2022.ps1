@@ -296,7 +296,7 @@ $fontFile = "CascadiaCode.zip"
                           'cls'
 
 # npcap URL
-$npcapURL = "https://nmap.org/npcap/dist/npcap-1.60.exe"
+$npcapURL = "https://npcap.com/dist/npcap-1.71.exe"
 
 
 # VCLib URL
